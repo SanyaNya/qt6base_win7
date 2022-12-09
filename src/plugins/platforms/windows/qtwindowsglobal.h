@@ -292,8 +292,10 @@ inline QtWindows::WindowsEventType windowsEventType(UINT message, WPARAM wParamI
         return HIWORD(wParamIn) ? QtWindows::AcceleratorCommandEvent : QtWindows::MenuCommandEvent;
     case WM_DPICHANGED:
         return QtWindows::DpiChangedEvent;
+#if defined(WM_DPICHANGED_AFTERPARENT)
     case WM_DPICHANGED_AFTERPARENT:
         return QtWindows::DpiChangedAfterParentEvent;
+#endif
     case WM_GETDPISCALEDSIZE:
         return QtWindows::DpiScaledSizeEvent;
     case WM_ENTERSIZEMOVE:
