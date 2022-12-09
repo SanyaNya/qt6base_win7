@@ -1,8 +1,11 @@
 // Copyright (C) 2016 The Qt Company Ltd.
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 
-#ifndef WINVER
-#  define WINVER 0x0A00 // Enable touch functions for MinGW
+#if defined(WINVER) && WINVER < 0x0601
+#  undef WINVER
+#endif
+#if !defined(WINVER)
+#  define WINVER 0x0601 // Enable touch functions for MinGW
 #endif
 
 #include "qwindowswindow.h"

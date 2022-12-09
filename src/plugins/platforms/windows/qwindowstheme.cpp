@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
 
 // SHSTOCKICONINFO is only available since Vista
-#ifndef _WIN32_WINNT
-#  define _WIN32_WINNT 0x0A00
+#if _WIN32_WINNT < 0x0601
+#  undef _WIN32_WINNT
+#  define _WIN32_WINNT 0x0601
 #endif
 
 #include "qwindowstheme.h"
