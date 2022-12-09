@@ -999,7 +999,7 @@ static inline QByteArray fileId(HANDLE handle)
 // File ID for Windows starting from version 8.
 QByteArray fileIdWin8(HANDLE handle)
 {
-#if !defined(QT_BOOTSTRAPPED)
+#if !defined(QT_BOOTSTRAPPED) && defined(Q_CC_MINGW) && WINVER < 0x0602 && _WIN32_WINNT < _WIN32_WINNT_WIN8
     QByteArray result;
     FILE_ID_INFO infoEx;
     if (GetFileInformationByHandleEx(
