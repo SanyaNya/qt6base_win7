@@ -15,7 +15,8 @@
 #include <wrl/wrappers/corewrappers.h>
 #include <comdef.h>
 
-#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG)
+#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG) && _WIN32_WINNT > 0x0601
+#pragma message ( "WARN: Using WinRT" )
 #define SUPPORTS_WINRT 1
 #endif
 

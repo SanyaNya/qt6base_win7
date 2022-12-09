@@ -17,7 +17,8 @@
 
 #include <QtCore/qglobal.h>
 
-#if !defined(QT_BOOTSTRAPPED) && defined(Q_OS_WIN) && !defined(Q_CC_CLANG) && QT_CONFIG(cpp_winrt)
+#if !defined(QT_BOOTSTRAPPED) && defined(Q_OS_WIN) && !defined(Q_CC_CLANG) && QT_CONFIG(cpp_winrt) && _WIN32_WINNT > 0x0601
+#pragma message ( "WARN: Using WinRT" )
 #    define QT_USE_FACTORY_CACHE_REGISTRATION
 #endif
 

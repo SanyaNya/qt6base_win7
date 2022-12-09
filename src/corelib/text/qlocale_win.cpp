@@ -17,7 +17,8 @@
 #   include <time.h>
 #endif
 
-#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG)
+#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG) && _WIN32_WINNT > 0x0601
+#pragma message ( "WARN: Using WinRT" )
 #   include <winrt/base.h>
 #   include <QtCore/private/qfactorycacheregistration_p.h>
 // Workaround for Windows SDK bug.
@@ -30,7 +31,7 @@ namespace winrt::impl
 #   include <winrt/Windows.Foundation.h>
 #   include <winrt/Windows.Foundation.Collections.h>
 #   include <winrt/Windows.System.UserProfile.h>
-#endif // QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG)
+#endif // QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG)) && _WIN32_WINNT > 0x0601
 
 QT_BEGIN_NAMESPACE
 
@@ -660,7 +661,8 @@ QVariant QSystemLocalePrivate::toCurrencyString(const QSystemLocale::CurrencyToS
 QVariant QSystemLocalePrivate::uiLanguages()
 {
     QStringList result;
-#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG)
+#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG) && _WIN32_WINNT > 0x0601
+#pragma message ( "WARN: Using WinRT" )
     using namespace winrt;
     using namespace Windows::System::UserProfile;
     auto languages = GlobalizationPreferences::Languages();
@@ -668,7 +670,7 @@ QVariant QSystemLocalePrivate::uiLanguages()
         result << QString::fromStdString(winrt::to_string(lang));
     if (!result.isEmpty())
         return result; // else just fall back to WIN32 API implementation
-#endif // QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG)
+#endif // QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG) && _WIN32_WINNT > 0x0601
     // mingw and clang still have to use Win32 API
     unsigned long cnt = 0;
     QVarLengthArray<wchar_t, 64> buf(64);

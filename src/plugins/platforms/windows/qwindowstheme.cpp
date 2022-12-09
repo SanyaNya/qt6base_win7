@@ -49,7 +49,8 @@
 
 #include <algorithm>
 
-#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG)
+#if QT_CONFIG(cpp_winrt) && !defined(Q_CC_CLANG) && _WIN32_WINNT > 0x0601
+#pragma message ( "WARN: Using WinRT" )
 #   include <winrt/base.h>
 // Workaround for Windows SDK bug.
 // See https://github.com/microsoft/Windows.UI.Composition-Win32-Samples/issues/47
