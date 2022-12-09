@@ -524,8 +524,12 @@ static inline void updateGLWindowSettings(const QWindow *w, HWND hwnd, Qt::Windo
     // The width of the padded border will always be 0 if DWM composition is
     // disabled, but since it will always be enabled and can't be programtically
     // disabled from Windows 8, we are safe to go.
-    return GetSystemMetricsForDpi(SM_CXSIZEFRAME, dpi)
-           + GetSystemMetricsForDpi(SM_CXPADDEDBORDER, dpi);
+	if(QWindowsContext::user32dll.getSystemMetricsForDpi) {
+		return QWindowsContext::user32dll.getSystemMetricsForDpi(SM_CXSIZEFRAME, dpi)
+           + QWindowsContext::user32dll.getSystemMetricsForDpi(SM_CXPADDEDBORDER, dpi);
+	}
+	
+	return 0;
 }
 
 /*!
@@ -553,9 +557,13 @@ static QMargins invisibleMargins(QPoint screenPoint)
 
 [[nodiscard]] static inline QMargins invisibleMargins(const HWND hwnd)
 {
-    const UINT dpi = GetDpiForWindow(hwnd);
-    const int gap = getResizeBorderThickness(dpi);
-    return QMargins(gap, 0, gap, gap);
+	if(QWindowsContext::user32dll.getDpiForWindow) {
+		const UINT dpi = QWindowsContext::user32dll.getDpiForWindow(hwnd);
+		const int gap = getResizeBorderThickness(dpi);
+		return QMargins(gap, 0, gap, gap);
+	}
+	
+	return QMargins();
 }
 
 /*!
@@ -2025,17 +2033,19 @@ void QWindowsWindow::handleDpiChanged(HWND hwnd, WPARAM wParam, LPARAM lParam)
 
 void QWindowsWindow::handleDpiChangedAfterParent(HWND hwnd)
 {
-    const UINT dpi = GetDpiForWindow(hwnd);
-    const qreal scale = qreal(dpi) / qreal(savedDpi());
-    setSavedDpi(dpi);
+	if(QWindowsContext::user32dll.getDpiForWindow) {
+		const UINT dpi = QWindowsContext::user32dll.getDpiForWindow(hwnd);
+		const qreal scale = qreal(dpi) / qreal(savedDpi());
+		setSavedDpi(dpi);
 
-    checkForScreenChanged(QWindowsWindow::FromDpiChange);
+		checkForScreenChanged(QWindowsWindow::FromDpiChange);
 
-    // Child windows do not get WM_GETDPISCALEDSIZE messages to inform
-    // Windows about the new size, so we need to manually scale them.
-    QRect currentGeometry = geometry();
-    QRect scaledGeometry = QRect(currentGeometry.topLeft() * scale, currentGeometry.size() * scale);
-    setGeometry(scaledGeometry);
+		// Child windows do not get WM_GETDPISCALEDSIZE messages to inform
+		// Windows about the new size, so we need to manually scale them.
+		QRect currentGeometry = geometry();
+		QRect scaledGeometry = QRect(currentGeometry.topLeft() * scale, currentGeometry.size() * scale);
+		setGeometry(scaledGeometry);
+	}
 }
 
 static QRect normalFrameGeometry(HWND hwnd)
