@@ -663,7 +663,7 @@ static HRESULT startDoDragDrop(LPDATAOBJECT pDataObj, LPDROPSOURCE pDropSource, 
 
                 return ::DoDragDrop(pDataObj, pDropSource, dwOKEffects, pdwEffect);
             }
-
+#if _WIN32_WINNT > 0x0601
             if (msg.message == WM_POINTERUPDATE) {
 
                 const quint32 pointerId = GET_POINTERID_WPARAM(msg.wParam);
@@ -709,7 +709,9 @@ static HRESULT startDoDragDrop(LPDATAOBJECT pDataObj, LPDROPSOURCE pDropSource, 
                         }
                     }
                 }
-            } else {
+            } else
+#endif //_WIN32_WINNT > 0x0601				
+			{
                 // Handle other messages.
                 qWindowsWndProc(msg.hwnd, msg.message, msg.wParam, msg.lParam);
 
