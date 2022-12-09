@@ -152,8 +152,10 @@ static QByteArray debugWinExStyle(DWORD exStyle)
         rc += " WS_EX_NOACTIVATE";
     if (exStyle & WS_EX_NOPARENTNOTIFY)
         rc += " WS_EX_NOPARENTNOTIFY";
+#if defined(WS_EX_NOREDIRECTIONBITMAP)
     if (exStyle & WS_EX_NOREDIRECTIONBITMAP)
         rc += " WS_EX_NOREDIRECTIONBITMAP";
+#endif
     if (exStyle & WS_EX_RIGHT)
         rc += " WS_EX_RIGHT";
     if (exStyle & WS_EX_RIGHTSCROLLBAR)
