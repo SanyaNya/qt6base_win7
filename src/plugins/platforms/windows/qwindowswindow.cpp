@@ -539,6 +539,9 @@ static inline void updateGLWindowSettings(const QWindow *w, HWND hwnd, Qt::Windo
 
 static QMargins invisibleMargins(QPoint screenPoint)
 {
+#ifndef MDT_EFFECTIVE_DPI
+	constexpr int MDT_EFFECTIVE_DPI = 0;
+#endif
     if (QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows10) {
         POINT pt = {screenPoint.x(), screenPoint.y()};
         if (HMONITOR hMonitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONULL)) {
