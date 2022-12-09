@@ -189,6 +189,7 @@ void QWindowsUser32DLL::init()
         getAwarenessFromDpiAwarenessContext = (GetAwarenessFromDpiAwarenessContext)library.resolve("GetAwarenessFromDpiAwarenessContext");
         systemParametersInfoForDpi = (SystemParametersInfoForDpi)library.resolve("SystemParametersInfoForDpi");
         getDpiForWindow = (GetDpiForWindow)library.resolve("GetDpiForWindow");
+		getSystemMetricsForDpi = (GetSystemMetricsForDpi)library.resolve("GetSystemMetricsForDpi");
     }
 }
 
