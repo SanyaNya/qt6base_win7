@@ -1072,7 +1072,7 @@ QMargins QWindowsGeometryHint::frame(const QWindow *w, DWORD style, DWORD exStyl
         return {};
 
     if (QWindowsContext::user32dll.adjustWindowRectExForDpi == nullptr)
-        return frameOnPrimaryScreen(style, exStyle);
+        return frameOnPrimaryScreen(w, style, exStyle);
 
     RECT rect = {0,0,0,0};
     style &= ~DWORD(WS_OVERLAPPED); // Not permitted, see docs.
