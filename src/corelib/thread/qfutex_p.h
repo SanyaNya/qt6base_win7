@@ -108,7 +108,7 @@ namespace QtLinuxFutex {
 namespace QtFutex = QtLinuxFutex;
 QT_END_NAMESPACE
 
-#elif defined(Q_OS_WIN)
+#elif defined(Q_OS_WIN) && WINVER > 0x601
 #  include <qt_windows.h>
 
 QT_BEGIN_NAMESPACE
